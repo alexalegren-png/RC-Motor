@@ -23,12 +23,98 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Generate PNG images
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          from PIL import Image, ImageDraw, ImageFont
+          import math
+
+          out = Path('assets/img')
+          out.mkdir(parents=True, exist_ok=True)
+
+          W, H = 1000, 563
+          red = (255, 40, 25)
+          orange = (255, 179, 0)
+          bg = (6, 7, 10)
+          panel = (17, 23, 34)
+          white = (245, 247, 250)
+          muted = (95, 105, 122)
+
+          def font(size):
+              for p in ['/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf','/usr/share/fonts/truetype/liberation2/LiberationSans-Bold.ttf']:
+                  if Path(p).exists():
+                      return ImageFont.truetype(p, size)
+              return ImageFont.load_default()
+
+          def base(title):
+              img = Image.new('RGB', (W,H), bg)
+              d = ImageDraw.Draw(img)
+              for i in range(0,W,90):
+                  d.line((i-260,H-65,i+260,H-65), fill=(35,39,48), width=20)
+              for i in range(-200, W, 190):
+                  d.line((i,120,i+430,120), fill=(120,22,18), width=10)
+                  d.line((i+70,175,i+600,175), fill=(110,85,0), width=6)
+              d.text((42,36), title, fill=white, font=font(42))
+              return img, d
+
+          def car(d, x, y, s=1.0):
+              pts=[(x+20*s,y+150*s),(x+100*s,y+70*s),(x+280*s,y+52*s),(x+455*s,y+105*s),(x+560*s,y+185*s),(x+500*s,y+230*s),(x+95*s,y+230*s)]
+              d.polygon(pts, fill=red)
+              d.polygon([(x+145*s,y+95*s),(x+285*s,y+75*s),(x+370*s,y+145*s),(x+105*s,y+155*s)], fill=(255,255,255))
+              d.polygon([(x+95*s,y+205*s),(x+520*s,y+205*s),(x+465*s,y+245*s),(x+60*s,y+245*s)], fill=panel)
+              for cx in [x+155*s,x+455*s]:
+                  d.ellipse((cx-55*s,y+230*s,cx+55*s,y+340*s), fill=(5,6,9), outline=muted, width=max(4,int(12*s)))
+                  d.ellipse((cx-17*s,y+268*s,cx+17*s,y+302*s), fill=orange)
+
+          def motor(d, x, y, s=1.0):
+              d.rounded_rectangle((x+150*s,y+110*s,x+610*s,y+270*s), radius=36, fill=(125,135,150), outline=white, width=4)
+              d.rounded_rectangle((x+560*s,y+130*s,x+700*s,y+250*s), radius=24, fill=red)
+              d.rounded_rectangle((x+680*s,y+175*s,x+810*s,y+205*s), radius=15, fill=white)
+              for xx in [230,350,470]:
+                  d.rounded_rectangle((x+xx*s,y+130*s,x+(xx+35)*s,y+250*s), radius=15, fill=(20,25,34))
+              d.line((x+25*s,y+135*s,x+170*s,y+135*s), fill=red, width=max(5,int(18*s)))
+              d.line((x+45*s,y+190*s,x+160*s,y+190*s), fill=orange, width=max(5,int(15*s)))
+              d.line((x+65*s,y+245*s,x+145*s,y+245*s), fill=white, width=max(5,int(12*s)))
+
+          def nitro(d):
+              d.rounded_rectangle((360,165,595,420), radius=34, fill=panel, outline=orange, width=10)
+              d.rounded_rectangle((415,78,545,198), radius=24, fill=red)
+              d.arc((560,195,885,445), 205, 340, fill=white, width=28)
+              d.ellipse((410,390,560,540), fill=(5,6,9), outline=muted, width=14)
+              d.line((130,370,410,370), fill=red, width=26)
+              d.line((180,300,390,300), fill=orange, width=16)
+
+          def accessories(d):
+              d.rounded_rectangle((120,150,330,295), radius=22, fill=panel, outline=orange, width=8)
+              d.ellipse((190,195,265,270), fill=red)
+              d.rounded_rectangle((440,155,680,240), radius=18, fill=(26,34,46), outline=muted, width=6)
+              for y in [315,365,415]: d.line((430,y,720,y), fill=(160,165,174), width=14)
+              d.ellipse((790,150,910,270), fill=panel, outline=red, width=10)
+              d.line((850,170,850,250), fill=orange, width=8)
+              d.line((810,210,890,210), fill=orange, width=8)
+              d.rounded_rectangle((750,330,940,450), radius=18, fill=(23,30,42), outline=orange, width=6)
+
+          def save(img, name):
+              img.save(out / name, 'PNG', optimize=True, compress_level=9)
+
+          img,d=base('RC RACING MOTORS'); car(d,220,155,.95); save(img,'hero-racing.png')
+          img,d=base('BRUSHLESS RC'); motor(d,110,160,1.0); save(img,'brushless-motor.png')
+          img,d=base('NITRO RC'); nitro(d); save(img,'nitro-engine.png')
+          img,d=base('CRAWLER RC'); car(d,220,160,.85); d.polygon([(0,500),(220,430),(450,465),(700,390),(1000,445),(1000,563),(0,563)], fill=(35,42,54)); save(img,'crawler-action.png')
+          img,d=base('ACCESORIOS RC'); accessories(d); save(img,'accessories-flatlay.png')
+          img,d=base('WORKSHOP RC'); car(d,120,220,.72); accessories(d); save(img,'workbench-setup.png')
+          PY
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
           path: '.'
+
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
