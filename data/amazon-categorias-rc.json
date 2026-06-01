@@ -1,0 +1,66 @@
+{
+  "marketplace": "amazon.es",
+  "associate_tag_placeholder": "TU-TAG-21",
+  "nota": "No incluir claves privadas en este archivo público. Usar variables de entorno en servidor o GitHub Secrets.",
+  "categorias": [
+    {
+      "slug": "motores-brushless-rc",
+      "nombre": "Motores brushless RC",
+      "search_index": "ToysAndGames",
+      "keywords": ["motor brushless rc 3650", "motor brushless rc coche 1/10", "motor brushless rc 4074 2200kv"],
+      "asin_prioritarios": [],
+      "filtros": {"min_rating": 4, "prime": true},
+      "prioridad": "alta"
+    },
+    {
+      "slug": "motores-brushed-rc",
+      "nombre": "Motores brushed RC",
+      "search_index": "ToysAndGames",
+      "keywords": ["motor brushed rc 540", "motor rc crawler 35t", "motor brushed coche rc 1/10"],
+      "asin_prioritarios": [],
+      "filtros": {"min_rating": 4, "prime": true},
+      "prioridad": "media"
+    },
+    {
+      "slug": "motores-nitro-rc",
+      "nombre": "Motores nitro RC",
+      "search_index": "ToysAndGames",
+      "keywords": ["motor nitro rc .21", "motor nitro rc coche 1/8", "motor nitro rc .12 touring"],
+      "asin_prioritarios": [],
+      "filtros": {"min_rating": 4, "prime": false},
+      "prioridad": "media"
+    },
+    {
+      "slug": "combos-motor-esc-rc",
+      "nombre": "Combos motor + ESC RC",
+      "search_index": "ToysAndGames",
+      "keywords": ["combo motor variador rc brushless", "combo brushless rc 1/10 esc 60a", "motor esc rc brushless"],
+      "asin_prioritarios": [],
+      "filtros": {"min_rating": 4, "prime": true},
+      "prioridad": "alta"
+    },
+    {
+      "slug": "variadores-esc-rc",
+      "nombre": "Variadores ESC RC",
+      "search_index": "ToysAndGames",
+      "keywords": ["variador esc brushless rc 60a", "esc rc brushless 120a", "variador rc coche 1/10"],
+      "asin_prioritarios": [],
+      "filtros": {"min_rating": 4, "prime": true},
+      "prioridad": "alta"
+    },
+    {
+      "slug": "accesorios-motores-rc",
+      "nombre": "Accesorios motores RC",
+      "search_index": "ToysAndGames",
+      "keywords": ["disipador motor rc", "ventilador motor rc", "piñon motor rc", "conectores motor rc"],
+      "asin_prioritarios": [],
+      "filtros": {"min_rating": 4, "prime": true},
+      "prioridad": "media"
+    }
+  ],
+  "mejora_continua": {
+    "revision_recomendada": "semanal",
+    "metricas": ["clics afiliado", "CTR por categoria", "conversion estimada", "productos sin stock", "precio medio", "posicion SEO", "consultas recibidas"],
+    "acciones": ["sustituir productos con baja conversion", "añadir ASINs ganadores", "mejorar keywords por categoria", "crear nuevas guias SEO", "actualizar precios y disponibilidad desde API autorizada"]
+  }
+}
